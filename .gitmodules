@@ -1,0 +1,12 @@
+[submodule "AlmacenFront"]
+	path = AlmacenFront
+	url = https://github.com/BrianSolism/AlmacenFront.git
+[submodule "Almacenback"]
+	path = Almacenback
+	url = https://github.com/BrianSolism/Almacenback.git
+[submodule "ClientesFront"]
+	path = ClientesFront
+	url = https://github.com/BrianSolism/ClientesFront.git
+[submodule "Clientesback"]
+	path = Clientesback
+	url = https://github.com/BrianSolism/Clientesback.git

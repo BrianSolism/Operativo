@@ -1,0 +1,91 @@
+version: '3.9'
+
+# ─────────────────────────────────────────────────────────────
+#  Portal Operativo ALGEBASA — docker-compose
+#  BDs externas:
+#    · clientes        → 10.0.0.210  (AuthBack + Clientesback)
+#    · pirelli_checklist → host local (Almacenback)
+#  Acceso: http://localhost:4200
+# ─────────────────────────────────────────────────────────────
+
+services:
+
+  # ── AuthBack (puerto 3002) ─────────────────────────────────
+  authback:
+    build:
+      context: ./AuthBack
+    container_name: algebasa-authback
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PORT: 3002
+    ports:
+      - "3002:3002"
+    networks:
+      - algebasa-net
+
+  # ── Clientesback (puerto 3000) ─────────────────────────────
+  clientesback:
+    build:
+      context: ./Clientesback
+    container_name: algebasa-clientesback
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    networks:
+      - algebasa-net
+
+  # ── Almacenback (puerto 3001) ──────────────────────────────
+  # BD checklist en 10.0.0.210
+  almacenback:
+    build:
+      context: ./Almacenback
+    container_name: algebasa-almacenback
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    networks:
+      - algebasa-net
+
+  # ── ClientesFront MFE remote (puerto 4201) ─────────────────
+  clientesfront:
+    build:
+      context: ./ClientesFront
+    container_name: algebasa-clientesfront
+    restart: unless-stopped
+    ports:
+      - "4201:80"
+    networks:
+      - algebasa-net
+
+  # ── AlmacenFront MFE remote (puerto 4202) ──────────────────
+  almacenfront:
+    build:
+      context: ./AlmacenFront
+    container_name: algebasa-almacenfront
+    restart: unless-stopped
+    ports:
+      - "4202:80"
+    networks:
+      - algebasa-net
+
+  # ── ShellApp MFE host (puerto 4200) ───────────────────────
+  shellapp:
+    build:
+      context: ./ShellApp
+    container_name: algebasa-shellapp
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    networks:
+      - algebasa-net
+
+networks:
+  algebasa-net:
+    driver: bridge
