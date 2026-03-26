@@ -27,7 +27,7 @@ export const routes: Routes = [
           try {
             const m = await loadRemoteModule({
               type: 'module',
-              remoteEntry: `http://${window.location.hostname}:4201/remoteEntry.js`,
+              remoteEntry: `${window.location.origin}/mfe/clientesfront/remoteEntry.js`,
               exposedModule: './Routes',
             });
             return m.mfeRoutes;
@@ -44,7 +44,7 @@ export const routes: Routes = [
           try {
             const m = await loadRemoteModule({
               type: 'module',
-              remoteEntry: `http://${window.location.hostname}:4202/remoteEntry.js`,
+              remoteEntry: `${window.location.origin}/mfe/almacenfront/remoteEntry.js`,
               exposedModule: './Routes',
             });
             return m.mfeRoutes;
@@ -60,7 +60,7 @@ export const routes: Routes = [
           try {
             const m = await loadRemoteModule({
               type: 'module',
-              remoteEntry: `http://${window.location.hostname}:4202/remoteEntry.js`,
+              remoteEntry: `${window.location.origin}/mfe/almacenfront/remoteEntry.js`,
               exposedModule: './Routes',
             });
             return m.catalogosRoutes;

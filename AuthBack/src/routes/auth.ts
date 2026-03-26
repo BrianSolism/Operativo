@@ -30,7 +30,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     }
 
     const [rows] = await pool.query<any[]>(
-      'SELECT * FROM usuarios WHERE (username = ? OR username = ?) AND activo = 1',
+      'SELECT idusuario, username, password_hash, nombre, es_admin, activo, rol FROM usuarios WHERE (username = ? OR username = ?) AND activo = 1',
       [lookupValue, lookupValue]
     );
 
@@ -46,6 +46,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
       nombre: string;
       es_admin: boolean | number;
       activo: boolean | number;
+      rol: string;
     };
 
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
@@ -57,9 +58,16 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
 
     const es_admin = Boolean(user.es_admin);
 
+    const rolMap: Record<string, string> = { '1': 'admin', '2': 'ejecutivo', '3': 'montacarguista' };
+    const rolRaw  = String(user.rol ?? '');
+    const rol     = rolMap[rolRaw] ?? (rolRaw || (es_admin ? 'admin' : 'ejecutivo'));
+
     const payload = {
+      id:       user.idusuario,
+      email:    user.username,
+      rol,
       idusuario: user.idusuario,
-      username: user.username,
+      username:  user.username,
       es_admin,
     };
 
@@ -68,9 +76,12 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     res.json({
       token,
       user: {
+        id:       user.idusuario,
+        email:    user.username,
+        nombre:   user.nombre,
+        rol,
         idusuario: user.idusuario,
-        username: user.username,
-        nombre: user.nombre,
+        username:  user.username,
         es_admin,
       },
     });
@@ -86,7 +97,7 @@ router.get('/me', requireAuth, async (req: AuthRequest, res: Response): Promise<
     const idusuario = req.user!.idusuario;
 
     const [rows] = await pool.query<any[]>(
-      `SELECT u.idusuario, u.username, u.nombre, u.es_admin,
+      `SELECT u.idusuario, u.username, u.nombre, u.es_admin, u.rol,
               m.clave AS modulo,
               p.puede_ver, p.puede_crear, p.puede_editar, p.puede_eliminar
        FROM usuarios u
@@ -106,6 +117,7 @@ router.get('/me', requireAuth, async (req: AuthRequest, res: Response): Promise<
       username: string;
       nombre: string;
       es_admin: boolean | number;
+      rol: string;
       modulo: string | null;
       puede_ver: boolean | number | null;
       puede_crear: boolean | number | null;
@@ -129,11 +141,16 @@ router.get('/me', requireAuth, async (req: AuthRequest, res: Response): Promise<
       }
     }
 
+    const rolMapMe: Record<string, string> = { '1': 'admin', '2': 'ejecutivo', '3': 'montacarguista' };
+    const rolRawMe = String(first.rol ?? '');
+    const rolMe = rolMapMe[rolRawMe] ?? (rolRawMe || (Boolean(first.es_admin) ? 'admin' : 'ejecutivo'));
+
     res.json({
       idusuario: first.idusuario,
       username: first.username,
       nombre: first.nombre,
       es_admin: Boolean(first.es_admin),
+      rol: rolMe,
       permisos,
     });
   } catch (err) {

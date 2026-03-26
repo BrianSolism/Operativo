@@ -1,10 +1,7 @@
 const { shareAll, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
 
 const mfConfig = withModuleFederationPlugin({
-  remotes: {
-    'clientesfront': 'clientesfront@http://localhost:4201/remoteEntry.js',
-    'almacenfront':  'almacenfront@http://localhost:4202/remoteEntry.js',
-  },
+  remotes: {},
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
   },
