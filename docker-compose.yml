@@ -1,5 +1,3 @@
-version: '3.9'
-
 # ─────────────────────────────────────────────────────────────
 #  Portal Operativo ALGEBASA — docker-compose
 #  BDs externas:
