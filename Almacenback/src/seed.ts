@@ -2,7 +2,7 @@
  * Seed inicial: crea el usuario admin con contraseña hasheada.
  * Ejecutar UNA sola vez: npx ts-node src/seed.ts
  */
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { pool } from './config/database';
 import dotenv from 'dotenv';
 

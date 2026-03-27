@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { poolClientes as pool } from '../config/database';
 import { RowDataPacket, ResultSetHeader } from 'mysql2/promise';
 
