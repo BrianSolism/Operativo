@@ -1,0 +1,233 @@
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<!-- ══ PAGE HEADER ════════════════════════════════════════════════ -->
+<div class="page-header">
+  <div class="page-header-deco"></div>
+  <div class="page-header-left">
+    <div class="page-icon-box">
+      <i class="pi pi-clipboard"></i>
+    </div>
+    <div>
+      <h1 class="page-title">Checklists de Inspección</h1>
+      <p class="page-subtitle">Gestión de materia prima — LV.99.MG.001.09</p>
+    </div>
+  </div>
+  <div class="page-header-right">
+    <div class="stat-block">
+      <span class="stat-num">{{ total }}</span>
+      <span class="stat-label">REGISTROS</span>
+    </div>
+    <button *ngIf="isAdmin" class="btn-usuarios" routerLink="/usuarios">
+      <i class="pi pi-users"></i>
+      Gestión Usuarios
+    </button>
+    <button *ngIf="userRol === 'ejecutivo' || isAdmin" class="btn-nuevo" (click)="nuevo()">
+      <i class="pi pi-plus"></i>
+      Nuevo Checklist
+    </button>
+  </div>
+</div>
+
+<!-- ══ CARD CON FILTROS + TABLA ═══════════════════════════════════ -->
+<p-card styleClass="list-card">
+
+  <!-- Barra superior de tarjeta -->
+  <ng-template pTemplate="header">
+    <div class="card-top-bar">
+      <span class="card-accent-bar"></span>
+      <span class="card-top-title"><i class="pi pi-filter" style="margin-right:0.4rem"></i>Filtros de búsqueda</span>
+    </div>
+  </ng-template>
+
+  <!-- ── Filtros ────────────────────────────────────────────── -->
+  <div class="filtros p-fluid grid mb-3">
+    <div class="field col-12 md:col-3">
+      <label>Material</label>
+      <input pInputText [(ngModel)]="filtMaterial" placeholder="Buscar por material..."
+             (keyup.enter)="applyFilters()" />
+    </div>
+    <div class="field col-12 md:col-3">
+      <label>Proveedor</label>
+      <input pInputText [(ngModel)]="filtProveedor" placeholder="Buscar por proveedor..."
+             (keyup.enter)="applyFilters()" />
+    </div>
+    <div class="field col-12 md:col-2">
+      <label>Fecha desde</label>
+      <p-calendar [(ngModel)]="filtFechaDesde" dateFormat="dd/mm/yy"
+                  [showIcon]="true" appendTo="body" placeholder="dd/mm/aaaa">
+      </p-calendar>
+    </div>
+    <div class="field col-12 md:col-2">
+      <label>Fecha hasta</label>
+      <p-calendar [(ngModel)]="filtFechaHasta" dateFormat="dd/mm/yy"
+                  [showIcon]="true" appendTo="body" placeholder="dd/mm/aaaa">
+      </p-calendar>
+    </div>
+    <div class="field col-12 md:col-2 flex align-items-end gap-2">
+      <p-button icon="pi pi-search" label="Buscar"  (onClick)="applyFilters()" severity="danger"></p-button>
+      <p-button icon="pi pi-times"  label="Limpiar" (onClick)="clearFilters()" severity="secondary" [outlined]="true"></p-button>
+    </div>
+  </div>
+
+  <!-- ── Tabla ──────────────────────────────────────────────── -->
+  <p-table [value]="checklists" [loading]="loading" responsiveLayout="scroll"
+           styleClass="p-datatable-sm p-datatable-gridlines"
+           [rowHover]="true">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:60px">ID</th>
+        <th>N° Checklist</th>
+        <th>Contenedor</th>
+        <th>Material</th>
+        <th>Proveedor</th>
+        <th>Fecha Llegada</th>
+        <th style="width:160px">Estado</th>
+        <th style="width:140px; text-align:center">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td><span class="badge-gray">{{ item.id }}</span></td>
+        <td><span class="badge-blue">{{ item.numeroChecklist }}</span></td>
+        <td>{{ item.contenedor || '—' }}</td>
+        <td>{{ item.material || '—' }}</td>
+        <td>{{ item.proveedor || '—' }}</td>
+        <td>{{ fmtFecha(item.fechaLlegada) }}</td>
+        <td>
+          <p-tag [value]="estadoLabel(item.estado)"
+                 [severity]="estadoSeverity(item.estado)">
+          </p-tag>
+        </td>
+        <td>
+          <div class="acciones-td">
+            <p-button icon="pi pi-pencil"   pTooltip="Editar"
+                      severity="info"    [text]="true" [rounded]="true"
+                      (onClick)="editar(item.id)">
+            </p-button>
+            <p-button icon="pi pi-file-pdf" pTooltip="Descargar PDF"
+                      severity="success" [text]="true" [rounded]="true"
+                      (onClick)="descargarPDF(item.id)">
+            </p-button>
+            <p-button *ngIf="isAdmin" icon="pi pi-trash" pTooltip="Eliminar"
+                      severity="danger"  [text]="true" [rounded]="true"
+                      (onClick)="eliminar(item.id)">
+            </p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8" style="text-align:center; padding:2.5rem; color:#9ca3af;">
+          <i class="pi pi-inbox" style="font-size:2rem; display:block; margin-bottom:0.5rem; color:#e2e8f0"></i>
+          No se encontraron registros.
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+  <!-- ── Paginador ──────────────────────────────────────────── -->
+  <p-paginator [rows]="limit" [totalRecords]="total"
+               [rowsPerPageOptions]="[5, 10, 25, 50]"
+               (onPageChange)="onPageChange($event)"
+               styleClass="mt-2">
+  </p-paginator>
+
+</p-card>
+
+<style>
+  /* ── Page Header ── */
+  .page-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #2b5290 0%, #1a3a6e 60%, #0f2347 100%);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(43,82,144,0.35);
+  }
+  .page-header-deco {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 35%;
+    background: rgba(245,134,52,0.12);
+    clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+    pointer-events: none;
+  }
+  .page-header-left { display: flex; align-items: center; gap: 1rem; z-index: 1; }
+  .page-icon-box {
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(245,134,52,0.5);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; color: #f58634;
+    flex-shrink: 0;
+  }
+  .page-title    { margin: 0 0 0.15rem; font-size: 2.2rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+  .page-subtitle { margin: 0; font-size: 0.82rem; color: rgba(255,255,255,0.6); }
+
+  .page-header-right { display: flex; align-items: center; gap: 1rem; z-index: 1; }
+  .stat-block { text-align: center; }
+  .stat-num   { display: block; font-size: 2.5rem; font-weight: 800; color: #f58634; line-height: 1; }
+  .stat-label { display: block; font-size: 0.7rem; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 1px; margin-top: 2px; }
+
+  .btn-nuevo {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: linear-gradient(135deg, #ed5d37, #f58634);
+    color: #fff; font-weight: 700; font-size: 0.88rem;
+    padding: 0.65rem 1.25rem; border: none; border-radius: 10px;
+    cursor: pointer; box-shadow: 0 4px 16px rgba(237,93,55,0.4);
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .btn-nuevo:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .btn-usuarios {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.15);
+    color: #fff; font-weight: 700; font-size: 0.88rem;
+    padding: 0.65rem 1.25rem; border: 1px solid rgba(255,255,255,0.3); border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-usuarios:hover { background: rgba(255,255,255,0.25); }
+
+  /* ── Responsive móvil ── */
+  @media (max-width: 640px) {
+    .page-header { flex-wrap: wrap; gap: 1rem; padding: 1rem 1.25rem; }
+    .page-title { font-size: 1.4rem; }
+    .page-header-left { flex: 1 1 100%; }
+    .page-header-right { flex: 1 1 100%; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+    .stat-num { font-size: 1.8rem; }
+    .btn-nuevo, .btn-usuarios { flex: 1; justify-content: center; }
+  }
+
+  /* ── Card top bar ── */
+  .card-top-bar {
+    display: flex; align-items: center;
+    background: #2b5290; border-radius: 16px 16px 0 0;
+    padding: 0.7rem 1.25rem; gap: 0.75rem;
+  }
+  .card-accent-bar {
+    width: 5px; height: 22px; border-radius: 3px; flex-shrink: 0;
+    background: linear-gradient(180deg, #f58634, #ed5d37);
+  }
+  .card-top-title { font-size: 1.05rem; font-weight: 700; color: #fff; }
+
+  /* ── Filtros ── */
+  .filtros { background: #f8fafc; border-radius: 10px; padding: 0.75rem; margin-bottom: 0; }
+
+  /* ── Acciones ── */
+  .acciones-td { display: flex; justify-content: center; gap: 0.1rem; }
+
+  /* ── List card ── */
+  :host ::ng-deep .list-card.p-card { padding: 0 !important; }
+  :host ::ng-deep .list-card .p-card-body { padding: 1.25rem; }
+  :host ::ng-deep .list-card .p-card-header { padding: 0; }
+</style>

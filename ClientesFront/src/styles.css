@@ -1,0 +1,150 @@
+/* ══ Importaciones base de PrimeNG ══ */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.min.css";
+@import "primeicons/primeicons.css";
+
+/* ══════════════════════════════════════════════
+   Sistema de diseño compartido — Grupo ALGEBASA
+   Clases alg-* usadas en todos los módulos
+   ══════════════════════════════════════════════ */
+
+/* ── Reset base ── */
+* { box-sizing: border-box; }
+body { font-family: var(--font-family); margin: 0; }
+
+/* ── Dropdown / Overlay panels — fondo blanco global ── */
+.p-dropdown-panel { background: #fff !important; border: 1px solid #e2e8f0 !important; border-radius: 10px !important; box-shadow: 0 8px 30px rgba(0,0,0,0.12) !important; }
+.p-dropdown-panel .p-dropdown-items { background: #fff !important; padding: 0.35rem 0 !important; }
+.p-dropdown-panel .p-dropdown-item { padding: 0.6rem 1rem !important; font-size: 0.9rem !important; color: #374151 !important; }
+.p-dropdown-panel .p-dropdown-item:not(.p-disabled):hover { background: #eff6ff !important; color: #2b5290 !important; }
+.p-dropdown-panel .p-dropdown-item.p-highlight { background: linear-gradient(135deg,#2b5290,#1a3a6e) !important; color: #fff !important; }
+.p-dropdown-panel .p-dropdown-header { background: #f8fafc !important; border-bottom: 1px solid #e2e8f0 !important; }
+
+/* ── Contenedor ── */
+.alg-container { padding: 1.5rem; background: #f1f5f9; min-height: 100vh; }
+
+/* ── Header ── */
+.alg-header {
+  position: relative;
+  background: linear-gradient(135deg, #2b5290 0%, #1a3a6e 60%, #0f2347 100%);
+  border-radius: 16px; margin-bottom: 1.5rem; overflow: hidden;
+  box-shadow: 0 12px 40px rgba(43,82,144,0.35);
+}
+.alg-header-diagonal {
+  position: absolute; top: 0; right: 0; width: 45%; height: 100%;
+  background: linear-gradient(135deg, transparent 30%, rgba(245,134,52,0.12) 100%);
+  clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+.alg-header-inner {
+  position: relative; display: flex; justify-content: space-between;
+  align-items: center; padding: 2rem 2.5rem; gap: 2rem;
+}
+.alg-header-left  { display: flex; align-items: center; gap: 1.2rem; }
+.alg-header-right { display: flex; align-items: center; gap: 2rem; }
+
+.alg-icon-wrap {
+  width: 60px; height: 60px; background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(245,134,52,0.5); border-radius: 14px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.alg-title    { color: white; font-size: 2.2rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
+.alg-subtitle { color: rgba(255,255,255,0.7); margin: 0.25rem 0 0; font-size: 0.95rem; }
+
+.alg-stat       { text-align: center; }
+.alg-stat-num   { display: block; font-size: 2.5rem; font-weight: 800; color: #f58634; line-height: 1; }
+.alg-stat-label { color: rgba(255,255,255,0.65); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+.alg-btn-new {
+  background: linear-gradient(135deg, #ed5d37, #f58634);
+  color: white; border: none; border-radius: 10px;
+  padding: 0.75rem 1.6rem; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
+  box-shadow: 0 6px 20px rgba(237,93,55,0.4); transition: transform 0.15s, box-shadow 0.15s;
+}
+.alg-btn-new:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(237,93,55,0.5); }
+
+/* ── Card / tabla ── */
+.alg-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+
+.alg-card-header {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.5rem; background: #2b5290;
+}
+.alg-card-header-bar {
+  width: 5px; height: 32px;
+  background: linear-gradient(to bottom, #f58634, #ed5d37);
+  border-radius: 3px; flex-shrink: 0;
+}
+.alg-card-title { color: white; font-weight: 700; font-size: 1.05rem; flex: 1; }
+
+.alg-search-wrap { position: relative; }
+.alg-search-icon {
+  position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%);
+  color: #2b5290; z-index: 1; font-size: 0.85rem;
+}
+.alg-search-input {
+  padding: 0.55rem 1rem 0.55rem 2.2rem;
+  border: 2px solid #e2e8f0; border-radius: 8px;
+  font-size: 0.9rem; width: 280px; outline: none;
+  transition: border-color 0.2s;
+}
+.alg-search-input:focus { border-color: #f58634; }
+
+/* ── Tabla ── */
+.alg-table-header th {
+  background: #f8fafc !important; color: #2b5290 !important;
+  font-weight: 700 !important; font-size: 0.82rem !important;
+  text-transform: uppercase !important; letter-spacing: 0.5px !important;
+  border-bottom: 2px solid #e2e8f0 !important; padding: 0.85rem 1rem !important;
+}
+.alg-row td { padding: 0.85rem 1rem; color: #374151; font-size: 0.9rem; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+.alg-row-alt td   { background: #f8fafc; }
+.alg-row:hover td { background: #eff6ff !important; }
+
+.alg-id    { font-weight: 700; color: #2b5290; }
+.alg-mono  { font-family: monospace; font-size: 0.85rem; }
+.alg-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+.alg-badge-blue   { background: #dbeafe; color: #1e40af; }
+.alg-badge-orange { background: #ffedd5; color: #c2410c; }
+.alg-badge-green  { background: #dcfce7; color: #166534; }
+.alg-badge-gray   { background: #f3f4f6; color: #374151; }
+
+.alg-btn-edit, .alg-btn-delete, .alg-btn-permisos {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.4rem 0.9rem; border-radius: 8px; border: none;
+  font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s; margin-right: 0.4rem;
+}
+.alg-btn-edit  { background: #dbeafe; color: #1d4ed8; }
+.alg-btn-edit:hover  { background: #2b5290; color: white; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(43,82,144,0.3); }
+.alg-btn-delete { background: #fee2e2; color: #dc2626; }
+.alg-btn-delete:hover { background: #dc2626; color: white; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(220,38,38,0.3); }
+.alg-btn-permisos { background: #ccfbf1; color: #0f766e; }
+.alg-btn-permisos:hover { background: #0d9488; color: white; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(13,148,136,0.3); }
+
+.alg-empty      { text-align: center; color: #9ca3af; padding: 2rem; }
+.alg-empty-cell { color: #9ca3af; font-style: italic; font-size: 0.82rem; }
+
+/* ── Formularios (base) ── */
+.alg-label {
+  display: block; font-size: 0.82rem; font-weight: 700; color: #2b5290;
+  margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.4px;
+}
+.alg-form-section { padding: 1rem; }
+
+.alg-btn-cancel {
+  background: transparent; color: #6b7280; border: 2px solid #e5e7eb;
+  border-radius: 8px; padding: 0.6rem 1.2rem; font-weight: 600; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.4rem; transition: border-color 0.15s;
+}
+.alg-btn-cancel:hover { border-color: #9ca3af; }
+
+.alg-btn-save {
+  background: linear-gradient(135deg, #ed5d37, #f58634);
+  color: white; border: none; border-radius: 8px;
+  padding: 0.6rem 1.4rem; font-weight: 700; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  box-shadow: 0 4px 14px rgba(237,93,55,0.35); transition: opacity 0.15s, transform 0.15s;
+}
+.alg-btn-save:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+.alg-btn-save:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }

@@ -1,0 +1,193 @@
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════════ -->
+<div class="page-header">
+  <div class="page-header-deco"></div>
+  <div class="page-header-left">
+    <div class="page-icon-box"><i class="pi pi-users"></i></div>
+    <div>
+      <h1 class="page-title">Gestión de Usuarios</h1>
+      <p class="page-subtitle">Administración de roles — Grupo ALGEBASA</p>
+    </div>
+  </div>
+  <div class="page-header-right">
+    <button class="btn-back" routerLink="/checklist">
+      <i class="pi pi-arrow-left"></i> Volver
+    </button>
+    <button class="btn-nuevo" (click)="openNew()">
+      <i class="pi pi-user-plus"></i> Nuevo Usuario
+    </button>
+  </div>
+</div>
+
+<!-- ══ TABLA ══════════════════════════════════════════════════════ -->
+<p-card styleClass="list-card">
+  <ng-template pTemplate="header">
+    <div class="card-top-bar">
+      <span class="card-accent-bar"></span>
+      <span class="card-top-title"><i class="pi pi-list" style="margin-right:0.4rem"></i>Usuarios del sistema</span>
+    </div>
+  </ng-template>
+
+  <p-table [value]="usuarios" [loading]="loading" responsiveLayout="scroll"
+           styleClass="p-datatable-sm p-datatable-gridlines" [rowHover]="true">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th style="width:150px">Rol</th>
+        <th style="width:100px;text-align:center">Estado</th>
+        <th style="width:120px;text-align:center">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-u>
+      <tr>
+        <td><b>{{ u.nombre }}</b></td>
+        <td>{{ u.email }}</td>
+        <td>
+          <p-tag [value]="rolLabel(u.rol)" [severity]="rolSeverity(u.rol)"></p-tag>
+        </td>
+        <td style="text-align:center">
+          <p-tag [value]="u.activo ? 'Activo' : 'Inactivo'"
+                 [severity]="u.activo ? 'success' : 'danger'">
+          </p-tag>
+        </td>
+        <td>
+          <div class="acciones-td">
+            <p-button icon="pi pi-pencil" pTooltip="Editar"
+                      severity="info" [text]="true" [rounded]="true"
+                      (onClick)="openEdit(u)">
+            </p-button>
+            <p-button [icon]="u.activo ? 'pi pi-ban' : 'pi pi-check'"
+                      [pTooltip]="u.activo ? 'Desactivar' : 'Activar'"
+                      [severity]="u.activo ? 'danger' : 'success'"
+                      [text]="true" [rounded]="true"
+                      (onClick)="toggleActivo(u)">
+            </p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" style="text-align:center;padding:2rem;color:#9ca3af">
+          No hay usuarios registrados.
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</p-card>
+
+<!-- ══ DIALOG NUEVO / EDITAR ══════════════════════════════════════ -->
+<p-dialog [(visible)]="showDialog"
+          [header]="editId ? 'Editar Usuario' : 'Nuevo Usuario'"
+          [modal]="true" [style]="{width:'420px'}"
+          [draggable]="false" [resizable]="false">
+
+  <form [formGroup]="form" class="p-fluid dialog-form">
+    <div class="field">
+      <label>Nombre <span class="req">*</span></label>
+      <input pInputText formControlName="nombre"
+        [class.ng-invalid]="form.get('nombre')?.invalid && form.get('nombre')?.touched" />
+    </div>
+    <div class="field">
+      <label>Email <span class="req">*</span></label>
+      <input pInputText formControlName="email" type="email"
+        [class.ng-invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
+    </div>
+    <div class="field">
+      <label>Contraseña {{ editId ? '(dejar vacío para no cambiar)' : '*' }}</label>
+      <p-password formControlName="password" [feedback]="false" [toggleMask]="true"
+        [class.ng-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
+      </p-password>
+    </div>
+    <div class="field">
+      <label>Rol <span class="req">*</span></label>
+      <p-dropdown formControlName="rol" [options]="rolesOpciones" appendTo="body"></p-dropdown>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [outlined]="true"
+      (onClick)="showDialog = false">
+    </p-button>
+    <p-button label="Guardar" icon="pi pi-save" severity="primary"
+      (onClick)="saveUsuario()">
+    </p-button>
+  </ng-template>
+
+</p-dialog>
+
+<style>
+  .page-header {
+    position: relative;
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(135deg, #2b5290 0%, #1a3a6e 60%, #0f2347 100%);
+    border-radius: 16px; padding: 1.5rem 2rem; margin-bottom: 1.25rem;
+    overflow: hidden; box-shadow: 0 12px 40px rgba(43,82,144,0.35);
+  }
+  .page-header-deco {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 35%;
+    background: rgba(245,134,52,0.12);
+    clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+    pointer-events: none;
+  }
+  .page-header-left { display: flex; align-items: center; gap: 1rem; z-index: 1; }
+  .page-icon-box {
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(245,134,52,0.5);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; color: #f58634; flex-shrink: 0;
+  }
+  .page-title    { margin: 0 0 0.15rem; font-size: 2rem; font-weight: 800; color: #fff; }
+  .page-subtitle { margin: 0; font-size: 0.82rem; color: rgba(255,255,255,0.6); }
+  .page-header-right { display: flex; align-items: center; gap: 1rem; z-index: 1; }
+
+  .btn-nuevo {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: linear-gradient(135deg, #ed5d37, #f58634);
+    color: #fff; font-weight: 700; font-size: 0.88rem;
+    padding: 0.65rem 1.25rem; border: none; border-radius: 10px;
+    cursor: pointer; box-shadow: 0 4px 16px rgba(237,93,55,0.4);
+    transition: opacity 0.2s;
+  }
+  .btn-nuevo:hover { opacity: 0.9; }
+
+  .btn-back {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.15);
+    color: #fff; font-weight: 700; font-size: 0.88rem;
+    padding: 0.65rem 1.25rem; border: 1px solid rgba(255,255,255,0.3); border-radius: 10px;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .btn-back:hover { background: rgba(255,255,255,0.25); }
+
+  .card-top-bar {
+    display: flex; align-items: center;
+    background: #2b5290; border-radius: 16px 16px 0 0;
+    padding: 0.7rem 1.25rem; gap: 0.75rem;
+  }
+  .card-accent-bar {
+    width: 5px; height: 22px; border-radius: 3px; flex-shrink: 0;
+    background: linear-gradient(180deg, #f58634, #ed5d37);
+  }
+  .card-top-title { font-size: 1.05rem; font-weight: 700; color: #fff; }
+
+  .acciones-td { display: flex; justify-content: center; gap: 0.1rem; }
+
+  .dialog-form { padding: 0.5rem 0; }
+  .dialog-form .field { margin-bottom: 1rem; }
+  .dialog-form label { font-size: 0.78rem; font-weight: 700; color: #2b5290; text-transform: uppercase; display: block; margin-bottom: 0.3rem; }
+  .req { color: #f58634; }
+
+  :host ::ng-deep .list-card.p-card { padding: 0 !important; }
+  :host ::ng-deep .list-card .p-card-body { padding: 1.25rem; }
+  :host ::ng-deep .list-card .p-card-header { padding: 0; }
+</style>

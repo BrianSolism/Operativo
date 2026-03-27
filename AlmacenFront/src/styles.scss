@@ -1,0 +1,220 @@
+/* Temas PrimeNG */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+
+/* Reset básico */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f1f5f9;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #2b5290; border-radius: 3px; }
+
+/* === ALGEBASA UTILITIES === */
+.text-algebasa   { color: #2b5290 !important; }
+.text-orange     { color: #f58634 !important; }
+.bg-algebasa     { background: #2b5290 !important; }
+
+/* === PrimeNG OVERRIDES === */
+.p-card {
+  border-radius: 16px !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08) !important;
+  border: none !important;
+}
+.p-card .p-card-body { padding: 1.25rem; }
+.p-card .p-card-content { padding: 0; }
+
+/* Primary button → orange gradient */
+.p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-secondary):not(.p-button-info):not(.p-button-success):not(.p-button-warning):not(.p-button-danger) {
+  background: linear-gradient(135deg, #ed5d37, #f58634) !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(237,93,55,0.35) !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+}
+.p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-secondary):not(.p-button-info):not(.p-button-success):not(.p-button-warning):not(.p-button-danger):hover {
+  background: linear-gradient(135deg, #d44f2a, #e5731f) !important;
+}
+
+/* Cancel / secondary */
+.p-button.p-button-secondary.p-button-outlined {
+  border: 2px solid #e5e7eb !important;
+  color: #6b7280 !important;
+  border-radius: 8px !important;
+}
+
+/* Success (PDF) */
+.p-button.p-button-success:not(.p-button-text):not(.p-button-outlined) {
+  background: #166534 !important;
+  border-color: #166534 !important;
+  border-radius: 8px !important;
+}
+
+/* Info (edit) */
+.p-button.p-button-info:not(.p-button-text):not(.p-button-outlined) {
+  background: #1e40af !important;
+  border-color: #1e40af !important;
+  border-radius: 8px !important;
+}
+
+/* Danger */
+.p-button.p-button-danger:not(.p-button-text):not(.p-button-outlined) {
+  background: linear-gradient(135deg, #ed5d37, #f58634) !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(237,93,55,0.35) !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+}
+.p-button.p-button-danger:not(.p-button-text):not(.p-button-outlined):hover {
+  background: linear-gradient(135deg, #d44f2a, #e5731f) !important;
+}
+
+/* Inline text action buttons */
+.p-button.p-button-text.p-button-info   { color: #1e40af !important; }
+.p-button.p-button-text.p-button-danger { color: #c2410c !important; }
+.p-button.p-button-text.p-button-success{ color: #166534 !important; }
+.p-button.p-button-rounded:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15) !important;
+}
+
+/* Table */
+.p-datatable .p-datatable-thead > tr > th {
+  background: #f8fafc !important;
+  color: #2b5290 !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-color: #e2e8f0 !important;
+}
+.p-datatable .p-datatable-tbody > tr:nth-child(even) > td {
+  background: #f8fafc !important;
+}
+.p-datatable .p-datatable-tbody > tr:hover > td {
+  background: #eff6ff !important;
+}
+.p-datatable .p-datatable-tbody > tr > td {
+  border-color: #e2e8f0 !important;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+/* Form labels */
+.field > label {
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #2b5290 !important;
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+/* Input borders */
+.p-inputtext, .p-dropdown, .p-inputnumber .p-inputtext {
+  border-color: #e2e8f0 !important;
+  border-radius: 8px !important;
+  font-size: 0.9rem !important;
+}
+.p-inputtext:focus, .p-dropdown:not(.p-disabled).p-focus {
+  border-color: #2b5290 !important;
+  box-shadow: 0 0 0 3px rgba(43,82,144,0.12) !important;
+}
+
+/* Paginator */
+.p-paginator { background: transparent !important; border: none !important; }
+.p-paginator .p-paginator-page.p-highlight {
+  background: #2b5290 !important;
+  border-color: #2b5290 !important;
+  color: #fff !important;
+}
+
+/* Toast */
+.p-toast .p-toast-message { border-radius: 12px !important; }
+
+/* ══ CHECKLIST FORM — RESPONSIVE MÓVIL ══════════════════════════ */
+.table-scroll {
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  display: block;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .checklist-form { padding: 0.5rem !important; }
+
+  /* Quitar overflow:hidden de la card para no bloquear hijos */
+  .cl-card { overflow: visible !important; }
+
+  /* Redondear el header del card directamente para compensar */
+  .cl-top    { border-radius: 12px 12px 0 0 !important; }
+  .cl-top-sm { border-radius: 12px 12px 0 0 !important; }
+
+  /* Encabezado compacto */
+  .cl-title { font-size: 0.82rem !important; }
+  .cl-sub   { font-size: 0.65rem !important; }
+
+  /* ── Datos generales: apilar label + input en columna única ── */
+  .dt, .dt tbody, .dt tr, .dt td {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border: none !important;
+  }
+  .dk {
+    background: #f1f5f9 !important;
+    padding: 0.5rem 0.75rem 0.1rem !important;
+    border-top: 1px solid #e2e8f0 !important;
+  }
+  .dv {
+    padding: 0.2rem 0.75rem 0.5rem !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+  }
+  .di { width: 100% !important; font-size: 1rem !important; }
+  /* Esconder celdas vacías del colgroup */
+  .dt colgroup { display: none !important; }
+
+  /* ── Inspección: scroll horizontal ── */
+  .table-scroll {
+    overflow-x: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .it { min-width: 510px !important; }
+
+  /* ── Firmas: 2 columnas ── */
+  .firmas-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* ── Acciones: centrar y wrap ── */
+  .acciones-bar {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .firmas-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Badges */
+.badge-blue   { background:#dbeafe; color:#1e40af; }
+.badge-orange { background:#ffedd5; color:#c2410c; }
+.badge-green  { background:#dcfce7; color:#166534; }
+.badge-gray   { background:#f3f4f6; color:#374151; }
+.badge-blue, .badge-orange, .badge-green, .badge-gray {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
