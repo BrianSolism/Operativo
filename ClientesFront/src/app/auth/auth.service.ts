@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 
-const API = `http://${window.location.hostname}:3002/api`;
+const API = '/api';
 
 export interface UserPermisos {
   ver: boolean;
