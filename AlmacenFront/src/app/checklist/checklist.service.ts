@@ -13,7 +13,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class ChecklistService {
   private readonly base     = `${environment.apiUrl}/api/checklist`;
-  private readonly baseUsers = `${environment.apiUrl}/api/usuarios`;
+  private readonly baseUsers = `${environment.apiUrl}/api/almacen/usuarios`;
 
   constructor(private http: HttpClient) {}
 

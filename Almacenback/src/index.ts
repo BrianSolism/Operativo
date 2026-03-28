@@ -19,7 +19,7 @@ app.use(express.json());
 
 // ─── Routes ──────────────────────────────────────────────────────────────────
 app.use('/api/checklist', checklistRoutes);
-app.use('/api/usuarios', usuariosRoutes);
+app.use('/api/almacen/usuarios', usuariosRoutes);
 
 // ─── Start server ────────────────────────────────────────────────────────────
 app.listen(PORT, async () => {
